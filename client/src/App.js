@@ -1,8 +1,8 @@
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://ingu-assignment.onrender.com';
-
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import './App.css';
+
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://ingu-assignment.onrender.com';
 
 function App() {
   const [contacts, setContacts] = useState([]);
