@@ -1,3 +1,7 @@
+const API_BASE_URL = process.env.NODE_ENV === 'production' 
+  ? 'https://your-backend-url.onrender.com' 
+  : 'http://localhost:5000';
+
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import './App.css';
@@ -16,7 +20,7 @@ function App() {
   const fetchContacts = useCallback(async () => {
     try {
       setLoading(true);
-      let url = `/api/contacts${searchTerm ? `?search=${searchTerm}` : ''}`;
+      let url = `${API_BASE_URL}/api/contacts${searchTerm ? `?search=${searchTerm}` : ''}`;
       if (selectedCategory !== 'All') {
         url += `${searchTerm ? '&' : '?'}category=${selectedCategory}`;
       }
@@ -74,14 +78,14 @@ function App() {
     try {
       setLoading(true);
       if (editingId) {
-        await axios.put(`/api/contacts/${editingId}`, formData);
+        await axios.put(`${API_BASE_URL}/api/contacts/${editingId}`, formData);
         setSuccess('Contact updated successfully');
         setEditingId(null);
       } else {
-        await axios.post('/api/contacts', formData);
+        await axios.post(`${API_BASE_URL}/api/contacts`, formData);
         setSuccess('Contact added successfully');
       }
-      setFormData({ name: '', email: '', phone: '' });
+      setFormData({ name: '', email: '', phone: '', category: 'Personal' });
       fetchContacts();
       setError('');
       setTimeout(() => setSuccess(''), 3000);
@@ -109,7 +113,7 @@ function App() {
     if (window.confirm('Are you sure you want to delete this contact?')) {
       try {
         setLoading(true);
-        await axios.delete(`/api/contacts/${id}`);
+        await axios.delete(`${API_BASE_URL}/api/contacts/${id}`);
         setSuccess('Contact deleted successfully');
         fetchContacts();
         setError('');
@@ -131,7 +135,7 @@ function App() {
     if (window.confirm(`Are you sure you want to delete ${selectedContacts.length} contact(s)?`)) {
       try {
         setLoading(true);
-        await Promise.all(selectedContacts.map(id => axios.delete(`/api/contacts/${id}`)));
+        await Promise.all(selectedContacts.map(id => axios.delete(`${API_BASE_URL}/api/contacts/${id}`)));
         setSuccess(`${selectedContacts.length} contact(s) deleted successfully`);
         setSelectedContacts([]);
         fetchContacts();
@@ -164,7 +168,7 @@ function App() {
         try {
           const importedContacts = JSON.parse(e.target.result);
           for (const contact of importedContacts) {
-            await axios.post('/api/contacts', contact);
+            await axios.post(`${API_BASE_URL}/api/contacts`, contact);
           }
           setSuccess(`${importedContacts.length} contacts imported successfully`);
           fetchContacts();
