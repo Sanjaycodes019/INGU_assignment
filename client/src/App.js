@@ -1,6 +1,4 @@
-const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://your-backend-url.vercel.app/api' 
-  : 'http://localhost:5000';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://ingu-assignment.onrender.com';
 
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
